@@ -9,12 +9,12 @@ function storageKeyFromBigNum(x: BigNumber) {
 
 async function main() {
   let swellAddress = "0x46DdC39E780088B1B146Aba8cBBe15DC321A1A1d";
-  const activeValidatorIndexesSlot = BigNumber.from(6);
-  const activeValidatorIndexesKey = storageKeyFromBigNum(
+  const activeValidatorIndexesSlot = BigNumber.from(6); // uint256
+  const activeValidatorIndexesKey = storageKeyFromBigNum( // bytes32
     activeValidatorIndexesSlot
   );
-  let operatorIdToValidatorDetailsSlot = BigNumber.from(4);
-  let operatorIdToValidatorDetailsKey = storageKeyFromBigNum(
+  let operatorIdToValidatorDetailsSlot = BigNumber.from(4); // uint256
+  let operatorIdToValidatorDetailsKey = storageKeyFromBigNum( // bytes32
     operatorIdToValidatorDetailsSlot
   );
   let rpc = process.env.RPC_1;
@@ -23,6 +23,7 @@ async function main() {
     let activeValidatorIndexesPosition = BigNumber.from(
       ethers.utils.keccak256(activeValidatorIndexesKey)
     ).add(BigNumber.from(i));
+    console.log(activeValidatorIndexesPosition);
     let value = BigNumber.from(
       await provider.getStorageAt(swellAddress, activeValidatorIndexesPosition)
     );
