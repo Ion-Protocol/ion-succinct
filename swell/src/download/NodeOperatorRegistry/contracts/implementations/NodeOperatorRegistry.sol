@@ -43,7 +43,21 @@ contract NodeOperatorRegistry is INodeOperatorRegistry, Initializable {
   uint256 public override numPendingValidators;
 
   // The active validator indexes are a bytes32 object containing 2 uint128's. They are encoded together to reduce storage costs. The first uint128 is the operator's ID and the second is the index of the key in their operatorIdToValidatorDetails array
-  EnumerableSetUpgradeable.Bytes32Set activeValidatorIndexes;
+
+  // activateValidatorIndexes.values[i] -> storage slot keccak(6) + i
+  // activateValidatorIndexes.indexes[b: bytes32] -> storage slot keccak(b | 7)
+
+
+  // array[i] = keccak(this storage slot) + i
+
+    // Storage of set values
+  bytes32[] _values;
+  // Position of the value in the `values` array, plus 1 because index 0
+  // means a value is not in the set.
+  mapping(bytes32 => uint256) _indexes;
+
+  // slot = keccak256([key, mappingSlot])
+  // EnumerableSetUpgradeable.Bytes32Set activeValidatorIndexes;
 
   // Allows efficient access to an operator Id based on a validator public key
   mapping(bytes => uint128) public override getOperatorIdForPubKey;
@@ -482,6 +496,7 @@ contract NodeOperatorRegistry is INodeOperatorRegistry, Initializable {
   ) external view override returns (string[] memory) {
     uint256 activeValidatorLength = activeValidatorIndexes.length();
 
+
     if (_endIndex < _startIndex || activeValidatorLength == 0) {
       return new string[](0);
     }
@@ -505,6 +520,13 @@ contract NodeOperatorRegistry is INodeOperatorRegistry, Initializable {
 
     for (uint256 i; i < numAddresses; i++) {
       uint256 values = uint256(activeValidatorIndexes.at(i + _startIndex));
+      // for i in 0..MAX:
+      //  uint256 values = uint256(storage[keccak256(6) + i + _startIndex]);
+      //  uint128 operatorId = uint128(values >> 128);
+      //  uint128 keyIndex = uint128(values);
+      //  INodeOperatorRegistry.ValidatorDetails validatorDetails = storage slot[keccak(4) + operatorId];
+      //  bytes memory pubkey = read_bytes(keccak(storage slot validatorDetails) + keyIndex);
+      
 
       // Split the response to get the operatorId and keyIndex values
       uint128 operatorId = uint128(values >> 128);
