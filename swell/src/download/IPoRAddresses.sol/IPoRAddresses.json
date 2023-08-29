@@ -1,0 +1,414 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "startIndex",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "endIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "getPoRAddressList",
+      "outputs": [
+        {
+          "internalType": "string[]",
+          "name": "",
+          "type": "string[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getPoRAddressListLength",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "getPoRAddressList(uint256,uint256)": "f3d4902a",
+    "getPoRAddressListLength()": "4f20b888"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.16+commit.07a7930e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"startIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endIndex\",\"type\":\"uint256\"}],\"name\":\"getPoRAddressList\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getPoRAddressListLength\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"All functions in this interface are expected to be called off-chain, so gas usage is not a big concern. This makes it possible to store addresses in optimized data types and convert them to human-readable strings in `getPoRAddressList()`.\",\"kind\":\"dev\",\"methods\":{\"getPoRAddressList(uint256,uint256)\":{\"details\":\"Due to limitations of gas usage in off-chain calls, we need to support fetching the addresses in batches. EVM addresses need to be converted to human-readable strings. The address strings need to be in the same format that would be used when querying the balance of that address.\",\"params\":{\"endIndex\":\"The index of the last address in the batch. If `endIndex > getPoRAddressListLength()-1`, endIndex need to default to `getPoRAddressListLength()-1`. If `endIndex < startIndex`, the result would be an empty array.\",\"startIndex\":\"The index of the first address in the batch.\"},\"returns\":{\"_0\":\"Array of addresses as strings.\"}},\"getPoRAddressListLength()\":{\"returns\":{\"_0\":\"The array length\"}}},\"title\":\"Chainlink Proof-of-Reserve address list interface.\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"getPoRAddressList(uint256,uint256)\":{\"notice\":\"Get a batch of human-readable addresses from the address list.\"},\"getPoRAddressListLength()\":{\"notice\":\"Get total number of addresses in the list.\"}},\"notice\":\"This interface enables Chainlink nodes to get the list addresses to be used in a PoR feed. A single contract that implements this interface can only store an address list for a single PoR feed.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"out/NodeOperatorRegistry/contracts/vendors/IPoRAddresses.sol\":\"IPoRAddresses\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\",\"lib/openzeppelin-contracts:openzeppelin/=lib/openzeppelin-contracts/contracts/\"]},\"sources\":{\"out/NodeOperatorRegistry/contracts/vendors/IPoRAddresses.sol\":{\"keccak256\":\"0xb63361087cbd29ead80f4d07b0751c780632a09786301aae9a2229470d96fd39\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a107a9ed62725cf6171ba15756c85cb9320788bf1bfa3bb97eb2f670644b3479\",\"dweb:/ipfs/QmXaLN7EK6Vrxo3n2ZLLHa7XzMSaE4LzspNBWonJphZmUE\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.16+commit.07a7930e"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "startIndex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "endIndex",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getPoRAddressList",
+          "outputs": [
+            {
+              "internalType": "string[]",
+              "name": "",
+              "type": "string[]"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getPoRAddressListLength",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "getPoRAddressList(uint256,uint256)": {
+            "details": "Due to limitations of gas usage in off-chain calls, we need to support fetching the addresses in batches. EVM addresses need to be converted to human-readable strings. The address strings need to be in the same format that would be used when querying the balance of that address.",
+            "params": {
+              "endIndex": "The index of the last address in the batch. If `endIndex > getPoRAddressListLength()-1`, endIndex need to default to `getPoRAddressListLength()-1`. If `endIndex < startIndex`, the result would be an empty array.",
+              "startIndex": "The index of the first address in the batch."
+            },
+            "returns": {
+              "_0": "Array of addresses as strings."
+            }
+          },
+          "getPoRAddressListLength()": {
+            "returns": {
+              "_0": "The array length"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "getPoRAddressList(uint256,uint256)": {
+            "notice": "Get a batch of human-readable addresses from the address list."
+          },
+          "getPoRAddressListLength()": {
+            "notice": "Get total number of addresses in the list."
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "ds-test/=lib/forge-std/lib/ds-test/src/",
+        "erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/",
+        "forge-std/=lib/forge-std/src/",
+        "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+        "lib/openzeppelin-contracts:openzeppelin/=lib/openzeppelin-contracts/contracts/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "out/NodeOperatorRegistry/contracts/vendors/IPoRAddresses.sol": "IPoRAddresses"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "out/NodeOperatorRegistry/contracts/vendors/IPoRAddresses.sol": {
+        "keccak256": "0xb63361087cbd29ead80f4d07b0751c780632a09786301aae9a2229470d96fd39",
+        "urls": [
+          "bzz-raw://a107a9ed62725cf6171ba15756c85cb9320788bf1bfa3bb97eb2f670644b3479",
+          "dweb:/ipfs/QmXaLN7EK6Vrxo3n2ZLLHa7XzMSaE4LzspNBWonJphZmUE"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [],
+    "types": {}
+  },
+  "ast": {
+    "absolutePath": "out/NodeOperatorRegistry/contracts/vendors/IPoRAddresses.sol",
+    "id": 4948,
+    "exportedSymbols": {
+      "IPoRAddresses": [
+        4947
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:1615:17",
+    "nodes": [
+      {
+        "id": 4928,
+        "nodeType": "PragmaDirective",
+        "src": "32:23:17",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "0.8",
+          ".16"
+        ]
+      },
+      {
+        "id": 4947,
+        "nodeType": "ContractDefinition",
+        "src": "587:1059:17",
+        "nodes": [
+          {
+            "id": 4935,
+            "nodeType": "FunctionDefinition",
+            "src": "713:67:17",
+            "nodes": [],
+            "documentation": {
+              "id": 4930,
+              "nodeType": "StructuredDocumentation",
+              "src": "615:95:17",
+              "text": " @notice Get total number of addresses in the list.\n @return The array length"
+            },
+            "functionSelector": "4f20b888",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getPoRAddressListLength",
+            "nameLocation": "722:23:17",
+            "parameters": {
+              "id": 4931,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "745:2:17"
+            },
+            "returnParameters": {
+              "id": 4934,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4933,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4935,
+                  "src": "771:7:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4932,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "771:7:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "770:9:17"
+            },
+            "scope": 4947,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 4946,
+            "nodeType": "FunctionDefinition",
+            "src": "1527:117:17",
+            "nodes": [],
+            "documentation": {
+              "id": 4936,
+              "nodeType": "StructuredDocumentation",
+              "src": "784:740:17",
+              "text": " @notice Get a batch of human-readable addresses from the address list.\n @dev Due to limitations of gas usage in off-chain calls, we need to support fetching the addresses in batches.\n EVM addresses need to be converted to human-readable strings. The address strings need to be in the same format\n that would be used when querying the balance of that address.\n @param startIndex The index of the first address in the batch.\n @param endIndex The index of the last address in the batch. If `endIndex > getPoRAddressListLength()-1`,\n endIndex need to default to `getPoRAddressListLength()-1`. If `endIndex < startIndex`, the result would be an\n empty array.\n @return Array of addresses as strings."
+            },
+            "functionSelector": "f3d4902a",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getPoRAddressList",
+            "nameLocation": "1536:17:17",
+            "parameters": {
+              "id": 4941,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4938,
+                  "mutability": "mutable",
+                  "name": "startIndex",
+                  "nameLocation": "1567:10:17",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4946,
+                  "src": "1559:18:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4937,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1559:7:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4940,
+                  "mutability": "mutable",
+                  "name": "endIndex",
+                  "nameLocation": "1591:8:17",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4946,
+                  "src": "1583:16:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4939,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1583:7:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1553:50:17"
+            },
+            "returnParameters": {
+              "id": 4945,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4944,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4946,
+                  "src": "1627:15:17",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_memory_ptr_$dyn_memory_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 4942,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1627:6:17",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 4943,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1627:8:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1626:17:17"
+            },
+            "scope": 4947,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IPoRAddresses",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 4929,
+          "nodeType": "StructuredDocumentation",
+          "src": "57:529:17",
+          "text": " @title Chainlink Proof-of-Reserve address list interface.\n @notice This interface enables Chainlink nodes to get the list addresses to be used in a PoR feed. A single\n contract that implements this interface can only store an address list for a single PoR feed.\n @dev All functions in this interface are expected to be called off-chain, so gas usage is not a big concern.\n This makes it possible to store addresses in optimized data types and convert them to human-readable strings\n in `getPoRAddressList()`."
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          4947
+        ],
+        "name": "IPoRAddresses",
+        "nameLocation": "597:13:17",
+        "scope": 4948,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 17
+}
