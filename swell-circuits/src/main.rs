@@ -12,7 +12,7 @@ use plonky2x::frontend::eth::beacon::vars::BeaconValidatorsVariable;
 use plonky2x::utils::{address, bytes32};
 use std::env;
 
-use plonky2x::frontend::eth::vars::AddressVariable;
+use plonky2x::frontend::eth::vars::{AddressVariable, BLSPubkeyVariable};
 use plonky2x::frontend::vars::{Bytes32Variable, EvmVariable, U256Variable, U32Variable};
 use plonky2x::prelude::Variable;
 use plonky2x::prelude::{BytesVariable, CircuitBuilder};
@@ -48,7 +48,7 @@ fn get_swell_validator_pubkey<F: RichField + Extendable<D>, const D: usize>(
     let bytes = result_plus_one.encode(&mut builder);
     let key = Bytes32Variable::decode(&mut builder, &bytes); // result_plus_one
 
-    let value = builder.eth_get_storage_at(swell_address_variable, key, block_hash);
+    let value = builder.eth_get_storage_at(block_hash, swell_address_variable, key);
     let operator_id = builder.shr(value.0, 128);
     let mut key_index = builder.shl(value.0, 128);
     key_index = builder.shr(key_index, 128);
@@ -74,24 +74,42 @@ fn get_swell_validator_pubkey<F: RichField + Extendable<D>, const D: usize>(
     builder.watch(&pubkey_bytes_position, "public key part one position"); 
 
     let pubkey_part_1 =
-    builder.eth_get_storage_at(swell_address_variable, pubkey_bytes_position, block_hash);
+    builder.eth_get_storage_at(block_hash, swell_address_variable, pubkey_bytes_position);
     builder.watch(&pubkey_part_1, "public key part one");
     
     // pubkey part 2 position = (pubkey_bytes_position + 1)
     let pubkey_bytes_position_u256 = U256Variable::decode(&mut builder, &pubkey_bytes_position.0.0); 
-    // builder.watch(&pubkey_bytes_position.0.0, "pubkey_bytes_position.0.0"); 
 
     let pubkey_bytes_position_plus_one = builder.add(pubkey_bytes_position_u256, ONE); 
     let bytes = pubkey_bytes_position_plus_one.encode(&mut builder); 
     let pubkey_bytes_position_part_two: Bytes32Variable = Bytes32Variable::decode(&mut builder, &bytes); 
-    let pubkey_part_2 = builder.eth_get_storage_at(swell_address_variable, pubkey_bytes_position_part_two, block_hash); 
+    let pubkey_part_2 = builder.eth_get_storage_at(block_hash, swell_address_variable, pubkey_bytes_position_part_two); 
     
-    builder.watch(&pubkey_bytes_position_u256, "PART 2 pubkey_bytes_position_u256"); 
-    builder.watch(&pubkey_bytes_position_plus_one, "PART 2 pubkey_bytes_position_plus_one"); 
-    // builder.watch(&bytes, "PART 2 pubkey_bytes_position_plus_one vector");
-    builder.watch(&pubkey_bytes_position_part_two, "PART 2 public key part two position"); 
-    builder.watch(&pubkey_part_2, "PART 2 public key part two");  
+    // combine part 1 and 2 
+    // part 2 = shift 2 to the left two chars, right (32 + 2) chars 
+    // part 1 || part 2 
+    // let pubkey_part_2_sliced: BytesVariable<16>;
+    // pubkey_part_2_sliced = BytesVariable::<16>(pubkey_part_2.as_bytes()[..16]); 
 
+    let pubkey = builder.init::<BLSPubkeyVariable>(); 
+    // let pubkey = builder.init::<BytesVariable<48>>();
+
+    let mut pubkey_bytes = pubkey.0;
+
+    for i in 0..32 {
+        pubkey_bytes.0[i] = pubkey_part_1.0.0[i];      
+    }
+
+    for i in 0..16 {
+        pubkey_bytes.0[i+32] = pubkey_part_2.0.0[i];
+    }
+
+    builder.watch(&pubkey_bytes, "BLS PUBKEY"); 
+
+    // First BLS PUBKEY was set to [168, 151, 125, 39, 137, 252, 62, 100, 148, 43, 196, 0, 54, 20, 63, 54, 86, 126, 56, 28, 99, 236, 54, 66, 66, 59, 88, 140, 167, 222, 120, 30, 198, 2, 3, 254, 135, 187, 77, 159, 24, 20, 163, 89, 221, 242, 101, 221]
+    //  final hex should be dd
+    // Second BLS PUBKEY was set to [145, 133, 43, 78, 102, 242, 22, 109, 54, 79, 194, 137, 25, 169, 152, 91, 173, 12, 46, 245, 31, 107, 26, 197, 48, 183, 229, 26, 158, 68, 217, 65, 8, 85, 245, 1, 108, 75, 65, 102, 102, 108, 117, 240, 168, 11, 107, 124]
+    //  final hex should be 7c 
     // first key 
     // true     0xa8977d2789fc3e64942bc40036143f36567e381c63ec3642423b588ca7de781ec60203fe87bb4d9f1814a359ddf265dd
     // combine  0xa8977d2789fc3e64942bc40036143f36567e381c63ec3642423b588ca7de781ec60203fe87bb4d9f1814a359ddf265dd00000000000000000000000000000000
