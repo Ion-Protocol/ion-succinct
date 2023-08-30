@@ -95,6 +95,7 @@ impl CircuitFunction for U32AddFunction {
 }
 
 fn main() {
+    dotenv::dotenv().ok();
     env::set_var("RUST_LOG", "info");
     U32AddFunction::cli();
 }
