@@ -37,11 +37,11 @@ fn get_swell_validator_pubkey<F: RichField + Extendable<D>, const D: usize>(
     let six = builder.constant::<Bytes32Variable>(bytes32!(
         "0x0000000000000000000000000000000000000000000000000000000000000006"
     ));
+    let one = builder.constant::<U256Variable>(U256::from(i));
 
     let result = builder.keccak256(&six.0 .0);
     let result_u256 = U256Variable::decode(&mut builder, &result.0 .0);
 
-    let one = builder.constant::<U256Variable>(U256::from(i));
     let result_plus_one = builder.add(result_u256, one);
     let bytes = result_plus_one.encode(&mut builder);
     let key = Bytes32Variable::decode(&mut builder, &bytes); // result_plus_one
@@ -56,18 +56,39 @@ fn get_swell_validator_pubkey<F: RichField + Extendable<D>, const D: usize>(
         concatenated.0[i] = operator_id.0[i];
         concatenated.0[32 + i] = four.0 .0[i];
     }
+    
     let validator_position = builder.keccak256(&concatenated.0);
     let pubkey_position = builder.keccak256(&validator_position.0 .0);
+
     let pubkey_position_u256 = U256Variable::decode(&mut builder, &pubkey_position.0 .0);
     let key_u256 = U256Variable::decode(&mut builder, &key_index.0);
-    let pubkey_position_plus_key_u256 = builder.add(pubkey_position_u256, key_u256);
+    
+    let pubkey_position_plus_key_u256 = builder.add(pubkey_position_u256, key_u256); 
+    
+    // pubkey part 1 
     let bytes = pubkey_position_plus_key_u256.encode(&mut builder);
     let pubkey_position_plus_key = Bytes32Variable::decode(&mut builder, &bytes);
-    let pubkey_bytes_position = builder.keccak256(&pubkey_position_plus_key.0 .0);
+    let pubkey_bytes_position = builder.keccak256(&pubkey_position_plus_key.0 .0); // final address 
+    builder.watch(&pubkey_bytes_position, "public key part one position"); 
 
     let pubkey_part_1 =
-        builder.eth_get_storage_at(swell_address_variable, pubkey_bytes_position, block_hash);
-    builder.watch(&pubkey_part_1, "public key");
+    builder.eth_get_storage_at(swell_address_variable, pubkey_bytes_position, block_hash);
+    builder.watch(&pubkey_part_1, "public key part one");
+    
+    // pubkey part 2 position = (pubkey_bytes_position + 1)
+    let pubkey_bytes_position_u256 = U256Variable::decode(&mut builder, &pubkey_bytes_position.0.0); 
+    let pubkey_bytes_position_plus_one = builder.add(pubkey_bytes_position_u256, one); 
+    let bytes = pubkey_bytes_position_plus_one.encode(&mut builder); 
+    let pubkey_bytes_position_part_two: Bytes32Variable = Bytes32Variable::decode(&mut builder, &bytes); 
+    let pubkey_part_2 = builder.eth_get_storage_at(swell_address_variable, pubkey_bytes_position_part_two, block_hash); 
+
+    
+    builder.watch(&pubkey_bytes_position_u256, "PART 2 pubkey_bytes_position_u256"); 
+    builder.watch(&pubkey_bytes_position_plus_one, "PART 2 pubkey_bytes_position_plus_one"); 
+    builder.watch(&pubkey_bytes_position_plus_one, "PART 2 pubkey_bytes_position_plus_one vector");
+    builder.watch(&pubkey_bytes_position_part_two, "PART 2 public key part two position"); 
+    builder.watch(&pubkey_part_2, "PART 2 public key part two");  
+
 }
 
 impl CircuitFunction for U32AddFunction {
@@ -83,10 +104,12 @@ impl CircuitFunction for U32AddFunction {
         let provider = Provider::<Http>::try_from(rpc_url).unwrap();
         builder.set_execution_client(provider);
 
-        for i in 0..100 {
+        for i in 0..1 {
             get_swell_validator_pubkey(&mut builder, i);
+            // hardcode the indexes 
         }
 
+        // builder.get_beacon_validator_from_u64(validators, index);
         // let validator = BeaconValidatorsVariable::CircuitVariable::new();
         // builder.get_beacon_validator_from_u64(pubkey_part_1, index)
 

@@ -52,12 +52,15 @@ async function main() {
     let pubkeyPart2 = await provider.getStorageAt(
       swellAddress,
       BigNumber.from(pubkeyBytesPosition).add(1).toHexString()
-    );
+      );
+    console.log("pubkeyPart1Position: ", pubkeyBytesPosition); 
+    console.log("pubkeyPart2Position: ", BigNumber.from(pubkeyBytesPosition).add(1).toHexString());
+    console.log("pubkeyPart1: ", pubkeyPart1); 
+    console.log("pubkeyPart2: ", pubkeyPart2); 
     console.log("Iteration 1");
     console.log("> Operation ID:", operatorId.toHexString());
     console.log("> Key Index:", keyIndex.toHexString());
-    console.log("> Pubkey:", (pubkeyPart1 + pubkeyPart2).slice(0, 98));
-
+    console.log("> Pubkey:", (pubkeyPart1 + pubkeyPart2).slice(0, 100));
   }
 }
 
