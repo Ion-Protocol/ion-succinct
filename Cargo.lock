@@ -2535,7 +2535,6 @@ checksum = "5696e2e2a6bb5c48a6e33fb0dd4d20d0a9472784b709964f337f224e99bd6d06"
 [[package]]
 name = "plonky2x"
 version = "0.1.0"
-source = "git+https://github.com/succinctlabs/succinctx.git?branch=john/get-beacon-validator#e79ae732d61cdbe48f176cac59c2596a6cc42091"
 dependencies = [
  "anyhow",
  "array-macro",
