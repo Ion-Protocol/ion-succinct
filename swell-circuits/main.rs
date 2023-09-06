@@ -10,6 +10,7 @@ use plonky2::plonk::config::{AlgebraicHasher, GenericConfig};
 use plonky2x::backend::circuit::Circuit;
 use plonky2x::backend::function::CircuitFunction;
 use plonky2x::frontend::eth::beacon::vars::BeaconValidatorsVariable;
+use plonky2x::frontend::uint::uint64::U64Variable;
 use plonky2x::utils::eth::beacon::BeaconClient;
 use plonky2x::utils::{address, bytes32};
 use std::env;
@@ -142,7 +143,7 @@ impl CircuitFunction for U32AddFunction {
         let rpc_url = env::var("RPC_1").unwrap();
         let provider = Provider::<Http>::try_from(rpc_url).unwrap();
         builder.set_execution_client(provider);
-        let beacon_url = env::var("CONSENSUS_RPC").unwrap();
+        let beacon_url = env::var("CONSENSUS_RPC_1").unwrap();
         let client = BeaconClient::new(beacon_url);
         builder.set_beacon_client(client);
 
@@ -153,24 +154,23 @@ impl CircuitFunction for U32AddFunction {
 
         // hardcode validator index for the pubkeys (later add to generator)
         let validator_idxs = vec![
-            builder.constant::<Variable>(F::from_canonical_u64(586163)),
-            builder.constant::<Variable>(F::from_canonical_u64(588675)),
-            builder.constant::<Variable>(F::from_canonical_u64(588676)),
-            builder.constant::<Variable>(F::from_canonical_u64(593963)),
-            builder.constant::<Variable>(F::from_canonical_u64(593964)),
+            builder.constant::<U64Variable>(586163.into()),
+            builder.constant::<U64Variable>(588675.into()),
+            builder.constant::<U64Variable>(588676.into()),
+            builder.constant::<U64Variable>(593963.into()),
+            builder.constant::<U64Variable>(593964.into()),
         ];
 
-        let validators = builder.get_beacon_validators(beacon_root);
+        let balances = builder.beacon_get_balances(beacon_root);
 
-        let mut balances: Vec<U256Variable> = Vec::new();
+        let mut b: Vec<U64Variable> = Vec::new();
         for i in 0..5 {
-            let bal = builder.get_beacon_validator_balance(validators, validator_idxs[i]);
-            balances.push(bal);
+            let bal = builder.beacon_get_balance(balances, validator_idxs[i]);
+            b.push(bal);
         }
 
-        let mut sum: U256Variable = builder.constant::<U256Variable>(U256::from(0));
-
-        for bal in balances {
+        let mut sum: U64Variable = builder.constant::<U64Variable>(0.into());
+        for bal in b {
             sum = builder.add(sum, bal);
         }
 
@@ -215,7 +215,7 @@ mod tests {
         )); // beacon hash
         let (proof, output) = circuit.prove(&input);
         circuit.verify(&proof, &input, &output);
-        let sum = output.evm_read::<U256Variable>();
+        let sum = output.evm_read::<U64Variable>();
         println!("{}", sum);
 
         // 32.01220

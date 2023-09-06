@@ -8,15 +8,13 @@ edition = "2021"
 [dependencies]
 ethers = "2.0.9"
 plonky2 = { git = "https://github.com/mir-protocol/plonky2.git", default-features = false}
-# plonky2x = { git = "https://github.com/succinctlabs/succinctx.git", branch = "john/add-keccak256" }
-# plonky2x = { git = "https://github.com/succinctlabs/succinctx.git", branch = "john/get-beacon-validator" }
-plonky2x = { path = "../succinctx/plonky2x" }
+plonky2x = { git = "https://github.com/succinctlabs/succinctx.git" }
 dotenv = "0.15.0"
 env_logger = "0.10.0"
 
 [[bin]]
 name = "swell-circuits"
-path = "swell-circuits/src/main.rs"
+path = "swell-circuits/main.rs"
 
 [dev-dependencies]
 plonky2 = { git = "https://github.com/mir-protocol/plonky2.git", features = ["gate_testing"]}
