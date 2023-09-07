@@ -126,9 +126,9 @@ impl CircuitFunction for SwellProviderCircuit {
         let beacon_hash = builder.evm_read::<Bytes32Variable>();
 
         let rpc_url = env::var("RPC_1").unwrap();
+        let beacon_url = env::var("CONSENSUS_RPC_1").unwrap();
         let provider = Provider::<Http>::try_from(rpc_url).unwrap();
         builder.set_execution_client(provider);
-        let beacon_url = env::var("CONSENSUS_RPC_1").unwrap();
         let client = BeaconClient::new(beacon_url);
         builder.set_beacon_client(client);
 
