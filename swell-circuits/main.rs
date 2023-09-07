@@ -12,7 +12,7 @@ use plonky2x::frontend::eth::vars::{AddressVariable, BLSPubkeyVariable};
 use plonky2x::frontend::vars::{Bytes32Variable, EvmVariable, U256Variable};
 use plonky2x::prelude::{BytesVariable, CircuitBuilder};
 
-pub struct U32AddFunction {}
+pub struct SwellProviderCircuit {}
 
 fn get_swell_validator_pubkey<L: PlonkParameters<D>, const D: usize>(
     mut builder: &mut CircuitBuilder<L, D>,
@@ -115,7 +115,7 @@ fn get_swell_validator_pubkey<L: PlonkParameters<D>, const D: usize>(
     // combine  0x91852b4e66f2166d364fc28919a9985bad0c2ef51f6b1ac530b7e51a9e44d9410855f5016c4b4166666c75f0a80b6b7c00000000000000000000000000000000
 }
 
-impl CircuitFunction for U32AddFunction {
+impl CircuitFunction for SwellProviderCircuit {
     fn build<L: PlonkParameters<D>, const D: usize>() -> Circuit<L, D> {
         let mut builder = CircuitBuilder::<L, D>::new();
 
@@ -166,7 +166,7 @@ impl CircuitFunction for U32AddFunction {
 
 fn main() {
     env::set_var("RUST_LOG", "info");
-    U32AddFunction::cli();
+    SwellProviderCircuit::cli();
 }
 
 #[cfg(test)]
@@ -182,7 +182,7 @@ mod tests {
     fn test_circuit() {
         dotenv::dotenv().ok();
         env_logger::init();
-        let circuit = U32AddFunction::build::<L, D>();
+        let circuit = SwellProviderCircuit::build::<L, D>();
         let mut input = circuit.input();
 
         // Input Data
