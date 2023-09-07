@@ -140,7 +140,7 @@ impl CircuitFunction for SwellProviderCircuit {
         // hardcode validator index for the pubkeys (later add to generator)
         let validator_idxs = vec![
             builder.constant::<U64Variable>(0.into()),
-            // builder.constant::<U64Variable>(1.into()),
+            builder.constant::<U64Variable>(1.into()),
             // builder.constant::<U64Variable>(2.into()),
             // builder.constant::<U64Variable>(3.into()),
             // builder.constant::<U64Variable>(4.into()),
@@ -149,7 +149,7 @@ impl CircuitFunction for SwellProviderCircuit {
         let balances = builder.beacon_get_balances(beacon_root);
 
         let mut b: Vec<U64Variable> = Vec::new();
-        for i in 0..1 {
+        for i in 0..2 {
             let bal = builder.beacon_get_balance(balances, validator_idxs[i]);
             b.push(bal);
         }
