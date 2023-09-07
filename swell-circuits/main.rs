@@ -160,7 +160,9 @@ impl CircuitFunction for SwellProviderCircuit {
         }
 
         builder.evm_write(sum);
-        builder.build()
+        let circuit = builder.build();
+        println!("build finished");
+        circuit
     }
 }
 
