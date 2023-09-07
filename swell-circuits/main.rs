@@ -1,31 +1,21 @@
-#![feature(generic_const_exprs)]
-
 use ethers::providers::{Http, Provider};
-use ethers::types::{H256, U256};
-use ethers::utils::keccak256;
-use plonky2::field::extension::Extendable;
-use plonky2::hash::hash_types::RichField;
-use plonky2::hash::hashing::PlonkyPermutation;
-use plonky2::plonk::config::{AlgebraicHasher, GenericConfig};
+use ethers::types::U256;
 use plonky2x::backend::circuit::Circuit;
+use plonky2x::backend::config::PlonkParameters;
 use plonky2x::backend::function::CircuitFunction;
-use plonky2x::frontend::eth::beacon::vars::BeaconValidatorsVariable;
 use plonky2x::frontend::uint::uint64::U64Variable;
 use plonky2x::utils::eth::beacon::BeaconClient;
 use plonky2x::utils::{address, bytes32};
 use std::env;
 
 use plonky2x::frontend::eth::vars::{AddressVariable, BLSPubkeyVariable};
-use plonky2x::frontend::vars::{Bytes32Variable, EvmVariable, U256Variable, U32Variable};
+use plonky2x::frontend::vars::{Bytes32Variable, EvmVariable, U256Variable};
 use plonky2x::prelude::{BytesVariable, CircuitBuilder};
-use plonky2x::prelude::{CircuitVariable, Variable};
 
 pub struct U32AddFunction {}
 
-fn slots_to_check_constant() {}
-
-fn get_swell_validator_pubkey<F: RichField + Extendable<D>, const D: usize>(
-    mut builder: &mut CircuitBuilder<F, D>,
+fn get_swell_validator_pubkey<L: PlonkParameters<D>, const D: usize>(
+    mut builder: &mut CircuitBuilder<L, D>,
     i: usize,
 ) -> BLSPubkeyVariable {
     let block_hash = builder.constant::<Bytes32Variable>(bytes32!(
@@ -126,13 +116,8 @@ fn get_swell_validator_pubkey<F: RichField + Extendable<D>, const D: usize>(
 }
 
 impl CircuitFunction for U32AddFunction {
-    fn build<F, C, const D: usize>() -> Circuit<F, C, D>
-    where
-        F: RichField + Extendable<D>,
-        C: GenericConfig<D, F = F> + 'static,
-        <C as GenericConfig<D>>::Hasher: AlgebraicHasher<F>,
-    {
-        let mut builder = CircuitBuilder::<F, D>::new();
+    fn build<L: PlonkParameters<D>, const D: usize>() -> Circuit<L, D> {
+        let mut builder = CircuitBuilder::<L, D>::new();
 
         // bytes memory inputs = abi.encode(blockHash, beaconRoot);
 
@@ -154,17 +139,17 @@ impl CircuitFunction for U32AddFunction {
 
         // hardcode validator index for the pubkeys (later add to generator)
         let validator_idxs = vec![
-            builder.constant::<U64Variable>(586163.into()),
-            builder.constant::<U64Variable>(588675.into()),
-            builder.constant::<U64Variable>(588676.into()),
-            builder.constant::<U64Variable>(593963.into()),
-            builder.constant::<U64Variable>(593964.into()),
+            builder.constant::<U64Variable>(0.into()),
+            // builder.constant::<U64Variable>(1.into()),
+            // builder.constant::<U64Variable>(2.into()),
+            // builder.constant::<U64Variable>(3.into()),
+            // builder.constant::<U64Variable>(4.into()),
         ];
 
         let balances = builder.beacon_get_balances(beacon_root);
 
         let mut b: Vec<U64Variable> = Vec::new();
-        for i in 0..5 {
+        for i in 0..1 {
             let bal = builder.beacon_get_balance(balances, validator_idxs[i]);
             b.push(bal);
         }
@@ -175,7 +160,7 @@ impl CircuitFunction for U32AddFunction {
         }
 
         builder.evm_write(sum);
-        builder.build::<C>()
+        builder.build()
     }
 }
 
@@ -186,19 +171,18 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use plonky2x::prelude::{GoldilocksField, PoseidonGoldilocksConfig};
+    use plonky2x::backend::config::DefaultParameters;
 
     use super::*;
 
-    type F = GoldilocksField;
-    type C = PoseidonGoldilocksConfig;
+    type L = DefaultParameters;
     const D: usize = 2;
 
     #[test]
     fn test_circuit() {
         dotenv::dotenv().ok();
         env_logger::init();
-        let circuit = U32AddFunction::build::<F, C, D>();
+        let circuit = U32AddFunction::build::<L, D>();
         let mut input = circuit.input();
 
         // Input Data
@@ -213,7 +197,7 @@ mod tests {
         input.evm_write::<Bytes32Variable>(bytes32!(
             "0x1ebf7efd8e0dec7358e713c5f528fa5d01734e00698d6094704b404774a28a67"
         )); // beacon hash
-        let (proof, output) = circuit.prove(&input);
+        let (proof, mut output) = circuit.prove(&input);
         circuit.verify(&proof, &input, &output);
         let sum = output.evm_read::<U64Variable>();
         println!("{}", sum);
