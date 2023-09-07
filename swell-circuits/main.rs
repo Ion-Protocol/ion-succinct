@@ -167,8 +167,11 @@ impl CircuitFunction for SwellProviderCircuit {
 }
 
 fn main() {
+    env_logger::init();
+    dotenv::dotenv().ok();
     env::set_var("RUST_LOG", "info");
     SwellProviderCircuit::cli();
+    println!("exiting");
 }
 
 #[cfg(test)]
