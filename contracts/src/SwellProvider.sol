@@ -28,7 +28,7 @@ contract SwellProvider {
     }
 
     function requestProof(bytes32 blockRoot) external payable {
-        bytes32 blockHash = blockhash(block.number - 1);
+        bytes32 blockHash = 0xbf55aabec79b2720fde32b5878bdc580b15289d74105eb09a509a3d32ce54664;
         IFunctionGateway(FUNCTION_GATEWAY).request{value: msg.value}(
             FUNCTION_ID,
             abi.encodePacked(blockRoot, blockHash),
