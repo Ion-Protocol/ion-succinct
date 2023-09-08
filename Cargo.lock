@@ -2638,7 +2638,7 @@ source = "git+https://github.com/mir-protocol/plonky2.git#65917f5f238bc2cff620bf
 [[package]]
 name = "plonky2x"
 version = "0.1.0"
-source = "git+https://github.com/succinctlabs/succinctx.git?branch=john/serialization-debug#09e61b06f2a2d20ebb5ad9398b860435698b53c6"
+source = "git+https://github.com/succinctlabs/succinctx.git#af6b9290654235a9be4657ce83ff24064b8b1797"
 dependencies = [
  "anyhow",
  "array-macro",
