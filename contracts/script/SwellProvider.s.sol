@@ -6,9 +6,10 @@ import "../src/SwellProvider.sol";
 
 contract SwellProviderScript is Script {
     function run() public {
+        // Note: need to use recent block root due to caching limits.
         vm.broadcast();
-        SwellProvider s = SwellProvider(0x8Dd1cDd8Ca34e0BB3F48Ff48998AAD6309e9Ffdb);
-        bytes32 blockRoot = 0xfa4e59e6c3597325e01fdb62835e3cbb327784f3f8037be4c7b9005121e3dcdd;
+        SwellProvider s = SwellProvider(0xf772793d06C4461273BC02478f2Fd720FdBc5DD7);
+        bytes32 blockRoot = 0x2e97f0f79b56670840c77972699b493fd2d748ab3c164e8e48b9b891c9a0c246;
         s.requestProof{value: 30 gwei * 1_000_000}(blockRoot);
     }
 }

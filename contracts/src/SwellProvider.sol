@@ -15,7 +15,7 @@ contract SwellProvider {
     address public constant FUNCTION_GATEWAY =
         0x852a94F8309D445D27222eDb1E92A4E83DdDd2a8;
     bytes32 public constant FUNCTION_ID =
-        0x7f0b087de10196a7b32871c5adff82501c2b99e1822f778f08ccfc161c227ea3;
+        0x029711e1f436752cef2871b01728fada9b2ae189a50c280baee6732ae6c69ab8;
 
     event CallbackReceived(uint256 requestId, uint64 result);
 
