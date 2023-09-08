@@ -13,8 +13,8 @@ dotenv = "0.15.0"
 env_logger = "0.10.0"
 
 [[bin]]
-name = "swell-circuits"
-path = "swell-circuits/main.rs"
+name = "circuits"
+path = "circuits/main.rs"
 
 [dev-dependencies]
 plonky2 = { git = "https://github.com/mir-protocol/plonky2.git", features = ["gate_testing"]}
