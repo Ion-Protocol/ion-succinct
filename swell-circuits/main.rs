@@ -133,15 +133,14 @@ impl CircuitFunction for SwellProviderCircuit {
         builder.set_beacon_client(client);
 
         let mut pubkeys: Vec<BLSPubkeyVariable> = Vec::new();
-        for i in 0..5 {
+        for i in 0..1 {
             pubkeys.push(get_swell_validator_pubkey(&mut builder, i));
         }
 
-        // hardcode validator index for the pubkeys (later add to generator)
+        // // hardcode validator index for the pubkeys (later add to generator)
         let validator_idxs = vec![
             builder.constant::<U64Variable>(0.into()),
-            builder.constant::<U64Variable>(1.into()),
-            // builder.constant::<U64Variable>(2.into()),
+            // builder.constant::<U64Variable>(1.into()),
             // builder.constant::<U64Variable>(3.into()),
             // builder.constant::<U64Variable>(4.into()),
         ];
@@ -149,7 +148,7 @@ impl CircuitFunction for SwellProviderCircuit {
         let balances = builder.beacon_get_balances(beacon_root);
 
         let mut b: Vec<U64Variable> = Vec::new();
-        for i in 0..2 {
+        for i in 0..1 {
             let bal = builder.beacon_get_balance(balances, validator_idxs[i]);
             b.push(bal);
         }
@@ -205,6 +204,7 @@ mod tests {
         let (proof, mut output) = circuit.prove(&input);
         circuit.verify(&proof, &input, &output);
         let sum = output.evm_read::<U64Variable>();
+        circuit.test_default_serializers();
         println!("{}", sum);
 
         // 32.01220
