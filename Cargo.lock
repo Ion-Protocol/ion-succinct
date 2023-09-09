@@ -2348,9 +2348,9 @@ checksum = "04744f49eae99ab78e0d5c0b603ab218f515ea8cfe5a456d7629ad883a3b6e7d"
 
 [[package]]
 name = "parity-scale-codec"
-version = "3.6.7"
+version = "3.6.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8d640b40e81625f53b59f9c5812d3fb9e7ce11971d3fb34268eb7a83adf98051"
+checksum = "0dec8a8073036902368c2cdc0387e85ff9a37054d7e7c98e592145e0c92cd4fb"
 dependencies = [
  "arrayvec",
  "bitvec",
@@ -2362,9 +2362,9 @@ dependencies = [
 
 [[package]]
 name = "parity-scale-codec-derive"
-version = "3.6.7"
+version = "3.6.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7ac464815d51fff2f64d690bf6ea4442d365e53495d50737685cfecfa3dd3f62"
+checksum = "312270ee71e1cd70289dacf597cab7b207aa107d2f28191c2ae45b2ece18a260"
 dependencies = [
  "proc-macro-crate",
  "proc-macro2",
@@ -2577,7 +2577,7 @@ checksum = "4503fa043bf02cee09a9582e9554b4c6403b2ef55e4612e96561d294419429f8"
 [[package]]
 name = "plonky2"
 version = "0.1.4"
-source = "git+https://github.com/mir-protocol/plonky2.git#65917f5f238bc2cff620bfb4061784ffc2436da0"
+source = "git+https://github.com/mir-protocol/plonky2.git#3571f097071ce0804600b5230ac7065cb3b62bda"
 dependencies = [
  "ahash",
  "anyhow",
@@ -2601,7 +2601,7 @@ dependencies = [
 [[package]]
 name = "plonky2_field"
 version = "0.1.1"
-source = "git+https://github.com/mir-protocol/plonky2.git#65917f5f238bc2cff620bfb4061784ffc2436da0"
+source = "git+https://github.com/mir-protocol/plonky2.git#3571f097071ce0804600b5230ac7065cb3b62bda"
 dependencies = [
  "anyhow",
  "itertools 0.11.0",
@@ -2625,7 +2625,7 @@ dependencies = [
 [[package]]
 name = "plonky2_maybe_rayon"
 version = "0.1.1"
-source = "git+https://github.com/mir-protocol/plonky2.git#65917f5f238bc2cff620bfb4061784ffc2436da0"
+source = "git+https://github.com/mir-protocol/plonky2.git#3571f097071ce0804600b5230ac7065cb3b62bda"
 dependencies = [
  "rayon",
 ]
@@ -2633,15 +2633,16 @@ dependencies = [
 [[package]]
 name = "plonky2_util"
 version = "0.1.1"
-source = "git+https://github.com/mir-protocol/plonky2.git#65917f5f238bc2cff620bfb4061784ffc2436da0"
+source = "git+https://github.com/mir-protocol/plonky2.git#3571f097071ce0804600b5230ac7065cb3b62bda"
 
 [[package]]
 name = "plonky2x"
 version = "0.1.0"
-source = "git+https://github.com/succinctlabs/succinctx.git#af6b9290654235a9be4657ce83ff24064b8b1797"
+source = "git+https://github.com/succinctlabs/succinctx.git#f1afc2d79ace607919f5c5d3ac2de5fc2f5dbd3b"
 dependencies = [
  "anyhow",
  "array-macro",
+ "backtrace",
  "bincode",
  "clap",
  "curta",

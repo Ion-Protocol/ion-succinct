@@ -119,13 +119,14 @@ impl CircuitFunction for SwellProviderCircuit {
             pubkeys.push(get_swell_validator_pubkey(&mut builder, block_hash, i));
         }
 
+        let validators = builder.beacon_get_validators(beacon_root);
+        let mut validator_idxs = Vec::new();
+        for pubkey in pubkeys {
+            let (validator_idx, _) = builder.beacon_get_validator_by_pubkey(validators, pubkey);
+            validator_idxs.push(validator_idx);
+        }
+
         // Grab the balances of the first five validators.
-        let validator_idxs = [
-            builder.constant::<U64Variable>(0.into()),
-            builder.constant::<U64Variable>(1.into()),
-            builder.constant::<U64Variable>(2.into()),
-            builder.constant::<U64Variable>(4.into()),
-        ];
         let balances = builder.beacon_get_balances(beacon_root);
         let mut balances_u64: Vec<U64Variable> = Vec::new();
         for validator_idx in validator_idxs {
@@ -168,14 +169,16 @@ mod tests {
         dotenv::dotenv().ok();
         env_logger::init();
 
+        let consensus_rpc_url = env::var("CONSENSUS_RPC_1").unwrap();
+        let beacon = BeaconClient::new(consensus_rpc_url);
+        let block_root = beacon.get_finalized_block_root_sync().unwrap();
+
         // Build the circuit.
         let circuit = SwellProviderCircuit::build::<L, D>();
 
         // Initialize a new input stream. Write the beacon root and then the block hash.
         let mut input = circuit.input();
-        input.evm_write::<Bytes32Variable>(bytes32!(
-            "0x42d26f5f8aebe6e979f09810ebec207c439a16b37dbcf88420aefe581590df87"
-        ));
+        input.evm_write::<Bytes32Variable>(bytes32!(block_root));
         input.evm_write::<Bytes32Variable>(bytes32!(
             "0xf60eff24c751fd2374430f9adb38cabf28218e7a9fe303218489fe56cc87d5e1"
         ));
