@@ -27,12 +27,6 @@ contract SwellProvider {
         return value;
     }
 
-    #[zk]
-    function compute(bytes32 a, bytes32 b) returns (u64) {
-        // todod
-        return 0;
-    }
-
     function requestProof(bytes32 blockRoot) external payable {
         bytes32 blockHash = 0xbf55aabec79b2720fde32b5878bdc580b15289d74105eb09a509a3d32ce54664;
         IFunctionGateway(FUNCTION_GATEWAY).request{value: msg.value}(
