@@ -22,7 +22,7 @@ contract IonOracleV1 {
 
     /// @notice The function id of the consensus oracle.
     bytes32 public constant FUNCTION_ID =
-        0xd260b477cf4ecd4834965295cd6847dd62dd75535f15b046efe66816316948e8;
+        0xa068153a2b1c6a6c5ff8de32676803879faf98d7a396b5a5d2e678d454f46550;
 
     /// @notice The nonce of the oracle.
     uint256 public nonce = 0;
