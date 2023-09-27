@@ -1,5 +1,5 @@
 [package]
-name = "plonky2x-example"
+name = "ion-oracle"
 version = "0.1.0"
 edition = "2021"
 
@@ -11,10 +11,12 @@ plonky2 = { git = "https://github.com/mir-protocol/plonky2.git", default-feature
 plonky2x = { git = "https://github.com/succinctlabs/succinctx.git" }
 dotenv = "0.15.0"
 env_logger = "0.10.0"
+itertools = "0.11.0"
+log = "0.4.20"
 
 [[bin]]
-name = "circuits"
-path = "circuits/main.rs"
+name = "v1"
+path = "circuits/v1.rs"
 
 [dev-dependencies]
 plonky2 = { git = "https://github.com/mir-protocol/plonky2.git", features = ["gate_testing"]}

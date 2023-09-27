@@ -1,7 +1,0 @@
-{
-  "name": "swell",
-  "packageManager": "yarn@3.3.1",
-  "scripts": {
-    "storage": "forge inspect src/download/NodeOperatorRegistry/contracts/implementations/NodeOperatorRegistry.sol:NodeOperatorRegistry storage"
-  }
-}

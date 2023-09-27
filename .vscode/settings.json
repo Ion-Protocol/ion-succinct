@@ -1,4 +1,11 @@
 { 
+    "rust-analyzer.runnables.extraEnv": {
+        "RUST_LOG": "debug",
+        "RUSTFLAGS": "-Ctarget-cpu=native"
+    },
+    "rust-analyzer.runnables.extraArgs": [
+        "--release"
+    ],
     "rust-analyzer.check.overrideCommand": [
         "cargo",
         "clippy",
@@ -7,16 +14,10 @@
         "--all-features",
         "--all-targets",
         "--",
-        "-D",
-        "warnings",
         "-A",
         "incomplete-features"
     ],
-    "rust-analyzer.runnables.extraEnv": {
-        "RUST_LOG": "debug",
-        "RUSTFLAGS": "-Ctarget-cpu=native"
-    },
-    "rust-analyzer.runnables.extraArgs": [
-        "--release"
-    ],
+    "rust-analyzer.diagnostics.disabled": [
+        "unresolved-proc-macro"
+    ], 
 }
