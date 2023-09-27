@@ -18,8 +18,7 @@ contract IonOracleV1 {
     address public constant SWELL_TOKEN_ADDRESS = 0xf951E335afb289353dc249e82926178EaC7DEd78;
 
     /// @notice The address of the function gateway.
-    address public constant FUNCTION_GATEWAY =
-        0x852a94F8309D445D27222eDb1E92A4E83DdDd2a8;
+    address public constant FUNCTION_GATEWAY = 0x852a94F8309D445D27222eDb1E92A4E83DdDd2a8;
 
     /// @notice The function id of the consensus oracle.
     bytes32 public constant FUNCTION_ID =
@@ -48,19 +47,13 @@ contract IonOracleV1 {
     /// @notice The entrypoint for requesting an oracle update.
     function requestUpdate(bytes32 blockRoot) external payable {
         IFunctionGateway(FUNCTION_GATEWAY).request{value: msg.value}(
-            FUNCTION_ID,
-            abi.encodePacked(blockRoot),
-            this.handleUpdate.selector,
-            abi.encode(nonce)
+            FUNCTION_ID, abi.encodePacked(blockRoot), this.handleUpdate.selector, abi.encode(nonce)
         );
         nonce++;
     }
 
     /// @notice The callback function for the oracle.
-    function handleUpdate(
-        bytes memory output,
-        bytes memory context
-    ) external {
+    function handleUpdate(bytes memory output, bytes memory context) external {
         require(msg.sender == FUNCTION_GATEWAY);
         uint256 requestId = abi.decode(context, (uint256));
         (uint64 lido, uint64 swell) = readTwoUint64(output);
