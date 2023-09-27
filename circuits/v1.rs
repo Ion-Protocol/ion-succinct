@@ -174,7 +174,8 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use log::debug;
-    use plonky2x::{prelude::DefaultParameters, utils};
+    use plonky2x::prelude::DefaultParameters;
+    use plonky2x::utils;
 
     use super::*;
 

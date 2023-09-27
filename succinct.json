@@ -1,5 +1,11 @@
 {
-    "preset": "plonky2",
-    "build_command": "rustup override set nightly && mkdir -p build && cargo run --release --bin v1 build && mv ./target/release/v1 ./build/v1",
-    "prove_command": "./build/v1 prove-wrapped --input-json input.json --wrapper-path /verifier-build"
+    "entrypoints": [
+        {
+            "name": "v1",
+            "framework": "plonky2",
+            "baseDir": ".",
+            "buildCommand":"rustup override set nightly && mkdir -p build && cargo run --release --bin v1 build && mv ./target/release/v1 ./build/v1",
+            "proveCommand": "./build/v1 prove-wrapped --input-json input.json --wrapper-path /verifier-build"
+        }
+    ]
 }
