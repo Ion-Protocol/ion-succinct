@@ -20,7 +20,7 @@ const SWELL_WITHDRAWAL_CREDENTIALS: &str =
     "0x010000000000000000000000b3d9cf8e163bbc840195a97e81f8a34e295b8f39";
 
 /// The number of balances to fetch.
-const NB_VALIDATORS: usize = 1024;
+const NB_VALIDATORS: usize = 131072;
 
 /// The batch size for fetching balances and computing the local balance roots.
 const BATCH_SIZE: usize = 512;
